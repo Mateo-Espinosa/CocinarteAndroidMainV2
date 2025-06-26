@@ -61,10 +61,9 @@ public class ComentariosAdapter extends RecyclerView.Adapter<ComentariosAdapter.
         holder.nombreUsuario.setText(comentario.getNombreUsuario());
         holder.contenido.setText(comentario.getContenido());
 
-        // Fecha formateada
+
         holder.fecha.setText(formatearFecha(comentario.isEditado() ? comentario.getFechaEdicion() : comentario.getFechaCreacion(), comentario.isEditado()));
 
-        // Cargar imagen de perfil (o predeterminada)
         if (comentario.getFotoPerfil() != null && !comentario.getFotoPerfil().isEmpty()) {
             Glide.with(context)
                     .load(comentario.getFotoPerfil())
@@ -75,7 +74,6 @@ public class ComentariosAdapter extends RecyclerView.Adapter<ComentariosAdapter.
             holder.imagenPerfil.setImageResource(R.drawable.perfil);
         }
 
-        // Mostrar botones si es el usuario actual
         if (comentario.getUsuarioId() == idUsuarioActual) {
             holder.btnEditar.setVisibility(View.VISIBLE);
             holder.btnEliminar.setVisibility(View.VISIBLE);

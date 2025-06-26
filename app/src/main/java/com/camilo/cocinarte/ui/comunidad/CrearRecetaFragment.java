@@ -119,7 +119,7 @@ public class CrearRecetaFragment extends Fragment {
                 .setTitle("Seleccionar imagen")
                 .setItems(opciones, (dialog, which) -> {
                     if (which == 0) {
-                        abrirCamara(); // 👈 usa este método ahora
+                        abrirCamara();
                     } else {
                         galeriaLauncher.launch("image/*");
                     }
@@ -216,22 +216,22 @@ public class CrearRecetaFragment extends Fragment {
         Chip chip = new Chip(requireContext());
         chip.setText(texto);
         chip.setTextSize(14);
-        chip.setChipBackgroundColorResource(R.color.chip_background); // personaliza si tienes color
+        chip.setChipBackgroundColorResource(R.color.chip_background);
         chip.setTextColor(getResources().getColor(android.R.color.black));
 
         // Estilo de chip
-        chip.setChipCornerRadius(50f); // Opcional
+        chip.setChipCornerRadius(50f);
 
         ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(8, 8, 8, 8); // ← separación entre chips
+        params.setMargins(8, 8, 8, 8);
         chip.setLayoutParams(params);
 
         if (esSeleccionado) {
             chip.setCloseIconVisible(true);
-            chip.setCloseIconResource(R.drawable.ic_chip_delete); // Usa tu ícono personalizado
+            chip.setCloseIconResource(R.drawable.ic_chip_delete);
             chip.setOnCloseIconClickListener(v -> {
                 binding.listaIngredientes.removeView(chip);
                 ingredientesSeleccionados.remove(texto);
@@ -276,7 +276,6 @@ public class CrearRecetaFragment extends Fragment {
         bundle.putString("dificultad", dificultad);
         bundle.putString("imagenUri", imagenUriSeleccionada.toString());
 
-        // 👇 Aquí agregamos el ID fijo de categoría = 1
         bundle.putInt("categoriaId", 1);
 
         StringBuilder ingredientesJson = new StringBuilder("[");

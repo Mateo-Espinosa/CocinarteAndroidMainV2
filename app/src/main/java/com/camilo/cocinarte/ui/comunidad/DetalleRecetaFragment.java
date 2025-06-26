@@ -63,10 +63,10 @@ public class DetalleRecetaFragment extends Fragment {
     private boolean recetaGuardada = false;
     private SharedPreferences prefsGuardado;
 
-    private String origen = "mis_recetas"; // valor por defecto
+    private String origen = "mis_recetas";
 
 
-    private JSONArray comentariosArray = new JSONArray();  // Nuevo
+    private JSONArray comentariosArray = new JSONArray();
     private Handler pollingHandler = new Handler();
     private Runnable pollingRunnable;
     private boolean estaBottomSheetAbierto = false;
@@ -89,11 +89,11 @@ public class DetalleRecetaFragment extends Fragment {
 
         cargarDatosUsuario(view);
 
-        // Referencia y clic al icono de comentarios
+
         ImageView iconComentario = view.findViewById(R.id.icon_comentario);
         iconComentario.setOnClickListener(v -> abrirSeccionComentarios());
 
-        //Referencia y click en compartir
+
         ImageView iconCompartir = view.findViewById(R.id.icon_compartir);
         iconCompartir.setOnClickListener(v -> {
             if (recetaActual != null) {
@@ -110,13 +110,12 @@ public class DetalleRecetaFragment extends Fragment {
             }
         });
 
-        // ICONO GUARDAR
+
         iconGuardar = view.findViewById(R.id.icon_guardar);
 
         iconGuardar.setOnClickListener(v -> {
             recetaGuardada = !recetaGuardada;
 
-            // Guardar el estado con el ID de la receta
             if (recetaActual != null) {
                 prefsGuardado.edit()
                         .putBoolean(String.valueOf(recetaActual.getIdReceta()), recetaGuardada)
@@ -128,10 +127,9 @@ public class DetalleRecetaFragment extends Fragment {
                     recetaGuardada ? "Receta guardada" : "Guardado eliminado",
                     Toast.LENGTH_SHORT).show();
 
-            animarIcono(iconGuardar); // animación
+            animarIcono(iconGuardar);
         });
 
-        // Referencias y clic al icono de likes
         iconLike = view.findViewById(R.id.icon_like);
         textLikeCount = view.findViewById(R.id.text_like_count);
 
@@ -141,7 +139,6 @@ public class DetalleRecetaFragment extends Fragment {
             }
         });
 
-        // Verificar si se recibió el ID de la receta
         if (getArguments() != null) {
             int idReceta = getArguments().getInt("id_receta", -1);
             if (idReceta != -1) {
@@ -150,7 +147,6 @@ public class DetalleRecetaFragment extends Fragment {
             }
         }
 
-        // Mostrar u ocultar el botón de eliminar dependiendo del origen
         String origen = getArguments().getString("origen", "mis_recetas");
         ImageView btnEliminar = view.findViewById(R.id.btn_delete_recipe);
         if ("comunidad".equals(origen)) {
@@ -223,7 +219,7 @@ public class DetalleRecetaFragment extends Fragment {
             public void run() {
                 if (recetaActual != null && estaBottomSheetAbierto) {
                     obtenerReacciones(recetaActual.getIdReceta());
-                    pollingHandler.postDelayed(this, 5000); // 5 segundos
+                    pollingHandler.postDelayed(this, 5000);
                 }
             }
         };
@@ -274,9 +270,8 @@ public class DetalleRecetaFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     recetaActual = response.body();
 
-                    // ✅ Recuperar estado guardado desde SharedPreferences usando el ID de la receta
                     recetaGuardada = prefsGuardado.getBoolean(String.valueOf(recetaActual.getIdReceta()), false);
-                    actualizarIconoGuardar(); // actualiza el ícono
+                    actualizarIconoGuardar();
 
                     mostrarDetallesReceta(recetaActual);
                     recetaCargada = true;
@@ -308,7 +303,6 @@ public class DetalleRecetaFragment extends Fragment {
                         actualizarLikeUI();
 
 
-                        // Nuevo: actualizar número de comentarios
                         comentariosArray = obj.getJSONArray("comentarios");
                         int totalComentarios = obj.getInt("total_comentarios");
                         TextView textCommentCount = requireView().findViewById(R.id.text_coments_count);
@@ -402,14 +396,12 @@ public class DetalleRecetaFragment extends Fragment {
         TextView userName = view.findViewById(R.id.user_name);
 
         if ("comunidad".equals(origen)) {
-            // 👇 Ocultar todo si viene desde comunidad
             userProfileImage.setVisibility(View.GONE);
             userEmail.setVisibility(View.GONE);
             userName.setVisibility(View.GONE);
             return;
         }
 
-        // De lo contrario, mostrar datos del usuario logueado
         SharedPreferences preferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         String photoUriString = preferences.getString("profile_image_uri", null);
 
